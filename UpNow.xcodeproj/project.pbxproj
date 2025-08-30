@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		58E1CBDA29BEB0E400000100 /* swiftui-app/OnlineCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD529BEB0E400000100 /* swiftui-app/OnlineCheckApp.swift */; };
+		58E1CBDB29BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD629BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift */; };
+		58E1CBDC29BEB0E400000102 /* swiftui-app/MenuContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD729BEB0E400000102 /* swiftui-app/MenuContentView.swift */; };
+		58E1CBDE29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */; };
+		58E1CBF629BEB0E400000121 /* swiftui-app/StatusIconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBF529BEB0E400000120 /* swiftui-app/StatusIconImage.swift */; };
+		58E1CC0A29BEB1F000000201 /* swiftui-app/LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */; };
+		58E1CC1229BEB22000000210 /* swiftui-app/login-item/LoginItemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */; };
+		58E1CC1629BEB23000000218 /* UpNowLoginItem.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 58E1CC1529BEB23000000217 /* UpNowLoginItem.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		58E1CC1729BEB23000000219 /* Embed Login Items */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LoginItems;
+			dstSubfolderSpec = 1;
+			files = (
+				58E1CC1629BEB23000000218 /* UpNowLoginItem.app in Embed Login Items */,
+			);
+			name = "Embed Login Items";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		58E1CBD529BEB0E400000100 /* swiftui-app/UpNowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/UpNowApp.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CBD629BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/ConnectivityMonitor.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CBD729BEB0E400000102 /* swiftui-app/MenuContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/MenuContentView.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CBD829BEB0E400000103 /* swiftui-app/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "swiftui-app/Info.plist"; sourceTree = SOURCE_ROOT; };
+		58E1CBD929BEB0E400000104 /* UpNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/StatusBarIcon.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CBF529BEB0E400000120 /* swiftui-app/StatusIconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/StatusIconImage.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/LaunchAtLogin.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CC1029BEB2200000020E /* swiftui-app/login-item/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "swiftui-app/login-item/Info.plist"; sourceTree = SOURCE_ROOT; };
+		58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/login-item/LoginItemApp.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CC1529BEB23000000217 /* UpNowLoginItem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpNowLoginItem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		58E1CBE229BEB0E40000010A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		58E1CC0F29BEB2200000020D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		58E1CBD029BEB0E400000105 = {
+			isa = PBXGroup;
+			children = (
+				58E1CBD129BEB0E400000106 /* UpNow */,
+				58E1CC1329BEB23000000214 /* UpNowLoginItem */,
+				58E1CBD229BEB0E400000107 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		58E1CBD129BEB0E400000106 /* UpNow */ = {
+			isa = PBXGroup;
+			children = (
+				58E1CBD529BEB0E400000100 /* swiftui-app/UpNowApp.swift */,
+				58E1CBD629BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift */,
+				58E1CBD729BEB0E400000102 /* swiftui-app/MenuContentView.swift */,
+				58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */,
+				58E1CBF529BEB0E400000120 /* swiftui-app/StatusIconImage.swift */,
+				58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */,
+				58E1CBD829BEB0E400000103 /* swiftui-app/Info.plist */,
+			);
+			name = UpNow;
+			sourceTree = "<group>";
+		};
+		58E1CBD229BEB0E400000107 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				58E1CBD929BEB0E400000104 /* UpNow.app */,
+				58E1CC1529BEB23000000217 /* UpNowLoginItem.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		58E1CC1329BEB23000000214 /* UpNowLoginItem */ = {
+			isa = PBXGroup;
+			children = (
+				58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */,
+				58E1CC1029BEB2200000020E /* swiftui-app/login-item/Info.plist */,
+			);
+			name = UpNowLoginItem;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		58E1CBF129BEB0E400000108 /* UpNow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 58E1CBE929BEB0E40000010E /* Build configuration list for PBXNativeTarget "UpNow" */;
+			buildPhases = (
+				58E1CBE029BEB0E400000109 /* Sources */,
+				58E1CBE229BEB0E40000010A /* Frameworks */,
+				58E1CBE129BEB0E40000010B /* Resources */,
+				58E1CC1729BEB23000000219 /* Embed Login Items */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UpNow;
+			productName = UpNow;
+			productReference = 58E1CBD929BEB0E400000104 /* UpNow.app */;
+			productType = "com.apple.product-type.application";
+		};
+		58E1CC1429BEB23000000216 /* UpNowLoginItem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 58E1CC1A29BEB2300000021B /* Build configuration list for PBXNativeTarget "UpNowLoginItem" */;
+			buildPhases = (
+				58E1CC0E29BEB2200000020C /* Sources */,
+				58E1CC0F29BEB2200000020D /* Frameworks */,
+				58E1CC0D29BEB2200000020B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UpNowLoginItem;
+			productName = UpNowLoginItem;
+			productReference = 58E1CC1529BEB23000000217 /* UpNowLoginItem.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		58E1CBAE29BEB0E4000000FF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					58E1CBF129BEB0E400000108 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					58E1CC1429BEB23000000216 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 58E1CBE629BEB0E40000010C /* Build configuration list for PBXProject "OnlineCheck" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 58E1CBD029BEB0E400000105;
+			productRefGroup = 58E1CBD229BEB0E400000107 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				58E1CBF129BEB0E400000108 /* UpNow */,
+				58E1CC1429BEB23000000216 /* UpNowLoginItem */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		58E1CBE129BEB0E40000010B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		58E1CC0D29BEB2200000020B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		58E1CBE029BEB0E400000109 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				58E1CBDE29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift in Sources */,
+				58E1CBF629BEB0E400000121 /* swiftui-app/StatusIconImage.swift in Sources */,
+				58E1CBDC29BEB0E400000102 /* swiftui-app/MenuContentView.swift in Sources */,
+				58E1CBDB29BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift in Sources */,
+				58E1CBDA29BEB0E400000100 /* swiftui-app/OnlineCheckApp.swift in Sources */,
+				58E1CC0A29BEB1F000000201 /* swiftui-app/LaunchAtLogin.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		58E1CC0E29BEB2200000020C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				58E1CC1229BEB22000000210 /* swiftui-app/login-item/LoginItemApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		58E1CBE729BEB0E40000010D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.UpNow;
+				PRODUCT_NAME = UpNow;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		58E1CBE829BEB0E40000010D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.UpNow;
+				PRODUCT_NAME = UpNow;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		58E1CBEA29BEB0E40000010F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = DT74KB5TAK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = "swiftui-app/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.UpNow;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		58E1CBEB29BEB0E40000010F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = DT74KB5TAK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = "swiftui-app/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.UpNow;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		58E1CC1829BEB2300000021A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = DT74KB5TAK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = "swiftui-app/login-item/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.UpNow.LoginItem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		58E1CC1929BEB2300000021A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = DT74KB5TAK;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				INFOPLIST_FILE = "swiftui-app/login-item/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.UpNow.LoginItem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		58E1CBE629BEB0E40000010C /* Build configuration list for PBXProject "OnlineCheck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				58E1CBE729BEB0E40000010D /* Debug */,
+				58E1CBE829BEB0E40000010D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		58E1CBE929BEB0E40000010E /* Build configuration list for PBXNativeTarget "OnlineCheck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				58E1CBEA29BEB0E40000010F /* Debug */,
+				58E1CBEB29BEB0E40000010F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		58E1CC1A29BEB2300000021B /* Build configuration list for PBXNativeTarget "OnlineCheckLoginItem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				58E1CC1829BEB2300000021A /* Debug */,
+				58E1CC1929BEB2300000021A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 58E1CBAE29BEB0E4000000FF /* Project object */;
+}
