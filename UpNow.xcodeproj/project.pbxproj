@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		58E1CBDA29BEB0E400000100 /* swiftui-app/OnlineCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD529BEB0E400000100 /* swiftui-app/OnlineCheckApp.swift */; };
+		58E1CBDA29BEB0E400000100 /* swiftui-app/UpNowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD529BEB0E400000100 /* swiftui-app/UpNowApp.swift */; };
 		58E1CBDB29BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD629BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift */; };
 		58E1CBDC29BEB0E400000102 /* swiftui-app/MenuContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBD729BEB0E400000102 /* swiftui-app/MenuContentView.swift */; };
 		58E1CBDE29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */; };
@@ -15,6 +15,7 @@
 		58E1CC0A29BEB1F000000201 /* swiftui-app/LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */; };
 		58E1CC1229BEB22000000210 /* swiftui-app/login-item/LoginItemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */; };
 		58E1CC1629BEB23000000218 /* UpNowLoginItem.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 58E1CC1529BEB23000000217 /* UpNowLoginItem.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		58E1CF2129BEB50000000250 /* swiftui-app/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58E1CF2029BEB50000000250 /* swiftui-app/Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,7 @@
 		58E1CC1029BEB2200000020E /* swiftui-app/login-item/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "swiftui-app/login-item/Info.plist"; sourceTree = SOURCE_ROOT; };
 		58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/login-item/LoginItemApp.swift"; sourceTree = SOURCE_ROOT; };
 		58E1CC1529BEB23000000217 /* UpNowLoginItem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpNowLoginItem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		58E1CF2029BEB50000000250 /* swiftui-app/Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "swiftui-app/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				58E1CBD529BEB0E400000100 /* swiftui-app/UpNowApp.swift */,
+				58E1CF2029BEB50000000250 /* swiftui-app/Assets.xcassets */,
 				58E1CBD629BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift */,
 				58E1CBD729BEB0E400000102 /* swiftui-app/MenuContentView.swift */,
 				58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */,
@@ -160,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 58E1CBE629BEB0E40000010C /* Build configuration list for PBXProject "OnlineCheck" */;
+			buildConfigurationList = 58E1CBE629BEB0E40000010C /* Build configuration list for PBXProject "UpNow" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -183,6 +186,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58E1CF2129BEB50000000250 /* swiftui-app/Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +208,7 @@
 				58E1CBF629BEB0E400000121 /* swiftui-app/StatusIconImage.swift in Sources */,
 				58E1CBDC29BEB0E400000102 /* swiftui-app/MenuContentView.swift in Sources */,
 				58E1CBDB29BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift in Sources */,
-				58E1CBDA29BEB0E400000100 /* swiftui-app/OnlineCheckApp.swift in Sources */,
+				58E1CBDA29BEB0E400000100 /* swiftui-app/UpNowApp.swift in Sources */,
 				58E1CC0A29BEB1F000000201 /* swiftui-app/LaunchAtLogin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,7 +250,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = DT74KB5TAK;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -294,7 +298,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = DT74KB5TAK;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -319,12 +323,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = DT74KB5TAK;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				INFOPLIST_FILE = "swiftui-app/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -346,12 +349,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = DT74KB5TAK;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				INFOPLIST_FILE = "swiftui-app/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -377,7 +379,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = DT74KB5TAK;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				INFOPLIST_FILE = "swiftui-app/login-item/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -403,7 +404,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = DT74KB5TAK;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				INFOPLIST_FILE = "swiftui-app/login-item/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -424,7 +424,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		58E1CBE629BEB0E40000010C /* Build configuration list for PBXProject "OnlineCheck" */ = {
+		58E1CBE629BEB0E40000010C /* Build configuration list for PBXProject "UpNow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58E1CBE729BEB0E40000010D /* Debug */,
@@ -433,7 +433,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58E1CBE929BEB0E40000010E /* Build configuration list for PBXNativeTarget "OnlineCheck" */ = {
+		58E1CBE929BEB0E40000010E /* Build configuration list for PBXNativeTarget "UpNow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58E1CBEA29BEB0E40000010F /* Debug */,
@@ -442,7 +442,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58E1CC1A29BEB2300000021B /* Build configuration list for PBXNativeTarget "OnlineCheckLoginItem" */ = {
+		58E1CC1A29BEB2300000021B /* Build configuration list for PBXNativeTarget "UpNowLoginItem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58E1CC1829BEB2300000021A /* Debug */,
