@@ -27,10 +27,12 @@ final class ConnectivityMonitor: ObservableObject {
     private let maxCheckInterval: TimeInterval = 120
 
     private static let historyDefaultsKey = "connectivityHistory"
+    private static let lastCheckDefaultsKey = "lastCheckDate"
 
     struct HistoryEntry: Identifiable, Codable {
         var id = UUID()
         let date: Date
+        var endDate: Date? = nil // nil while the state is still current
         let state: OnlineState
     }
 
@@ -189,6 +191,9 @@ final class ConnectivityMonitor: ObservableObject {
         state = newState
         if newState != .online { latency = nil }
         lastUpdated = Date()
+        // Remember when we last checked so a relaunch can close out the
+        // current history entry instead of letting it span app downtime.
+        UserDefaults.standard.set(lastUpdated, forKey: Self.lastCheckDefaultsKey)
         record(newState)
         updateCheckInterval(stable: previous == newState)
     }
@@ -209,7 +214,11 @@ final class ConnectivityMonitor: ObservableObject {
         // Do not record transient checking states
         guard newState != .checking else { return }
         // Only record transitions; repeated identical results are noise.
-        if history.first?.state == newState { return }
+        // Entries closed at relaunch don't dedupe, so each run starts fresh.
+        if let first = history.first, first.state == newState, first.endDate == nil { return }
+        if !history.isEmpty, history[0].endDate == nil {
+            history[0].endDate = Date()
+        }
         history.insert(HistoryEntry(date: Date(), state: newState), at: 0)
         if history.count > 10 { history.removeLast(history.count - 10) }
         saveHistory()
@@ -223,8 +232,14 @@ final class ConnectivityMonitor: ObservableObject {
 
     private static func loadHistory() -> [HistoryEntry] {
         guard let data = UserDefaults.standard.data(forKey: historyDefaultsKey),
-              let entries = try? JSONDecoder().decode([HistoryEntry].self, from: data) else {
+              var entries = try? JSONDecoder().decode([HistoryEntry].self, from: data) else {
             return []
+        }
+        // Close the entry that was current when the app last ran, so its
+        // duration ends at the last check rather than spanning downtime.
+        if let first = entries.first, first.endDate == nil {
+            let lastCheck = UserDefaults.standard.object(forKey: lastCheckDefaultsKey) as? Date
+            entries[0].endDate = max(first.date, lastCheck ?? first.date)
         }
         return entries
     }

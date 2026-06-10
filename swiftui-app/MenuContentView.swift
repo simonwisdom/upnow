@@ -53,11 +53,9 @@ struct MenuContentView: View {
                     Text("No history yet")
                         .foregroundColor(.secondary)
                 } else {
-                    ForEach(Array(monitor.history.enumerated()), id: \.element.id) { index, entry in
-                        // Each entry lasted until the next-newer one began;
-                        // the newest is still ongoing.
-                        let endDate = index == 0 ? Date() : monitor.history[index - 1].date
-                        Text(historyLine(entry, endDate: endDate))
+                    ForEach(monitor.history) { entry in
+                        // An open entry (no endDate) is still ongoing.
+                        Text(historyLine(entry, endDate: entry.endDate ?? Date()))
                             .foregroundColor(color(for: entry.state))
                     }
                     Divider()
