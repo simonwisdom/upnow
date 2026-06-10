@@ -10,7 +10,7 @@ struct MenuContentView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
                 Circle()
-                    .fill(colorForState())
+                    .fill(color(for: monitor.state))
                     .frame(width: 10, height: 10)
                     .accessibilityHidden(true)
                 Text(monitor.statusText)
@@ -50,7 +50,7 @@ struct MenuContentView: View {
                 } else {
                     ForEach(Array(monitor.history.prefix(10))) { entry in
                         Text(historyLine(entry))
-                            .foregroundColor(textColor(for: entry.state))
+                            .foregroundColor(color(for: entry.state))
                     }
                     Divider()
                     Button("Clear History") {
@@ -81,15 +81,6 @@ struct MenuContentView: View {
         .frame(minWidth: 220)
     }
 
-    private func colorForState() -> Color {
-        switch monitor.state {
-        case .online: return .green
-        case .offline: return .red
-        case .checking: return .yellow
-        case .captive: return .orange
-        }
-    }
-
     private func formatted(_ date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .short
@@ -103,7 +94,6 @@ struct MenuContentView: View {
         return oldestFirst + [monitor.state]
     }
 
-    // kept for potential future string-based rendering
     private func condensedEmojiLine() -> String {
         recentStates().map { emoji(for: $0) }.joined(separator: " ")
     }
@@ -116,8 +106,6 @@ struct MenuContentView: View {
         case .captive: return "⚠️"
         }
     }
-
-    // no-op
 
     private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry) -> String {
         let rel = RelativeDateTimeFormatter()
@@ -149,15 +137,6 @@ struct MenuContentView: View {
     }
 
     private func color(for state: OnlineState) -> Color {
-        switch state {
-        case .online: return .green
-        case .offline: return .red
-        case .checking: return .yellow
-        case .captive: return .orange
-        }
-    }
-
-    private func textColor(for state: OnlineState) -> Color {
         switch state {
         case .online: return .green
         case .offline: return .red
