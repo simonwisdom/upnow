@@ -13,6 +13,7 @@
 		58E1CBDE29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */; };
 		58E1CBF629BEB0E400000121 /* swiftui-app/StatusIconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CBF529BEB0E400000120 /* swiftui-app/StatusIconImage.swift */; };
 		58E1CC0A29BEB1F000000201 /* swiftui-app/LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */; };
+		58E1CD0229BEB0E400000401 /* swiftui-app/StatusAnnouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CD0129BEB0E400000400 /* swiftui-app/StatusAnnouncer.swift */; };
 		58E1CC1229BEB22000000210 /* swiftui-app/login-item/LoginItemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */; };
 		58E1CC1629BEB23000000218 /* UpNowLoginItem.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 58E1CC1529BEB23000000217 /* UpNowLoginItem.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		58E1CF2129BEB50000000250 /* swiftui-app/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58E1CF2029BEB50000000250 /* swiftui-app/Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/StatusBarIcon.swift"; sourceTree = SOURCE_ROOT; };
 		58E1CBF529BEB0E400000120 /* swiftui-app/StatusIconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/StatusIconImage.swift"; sourceTree = SOURCE_ROOT; };
 		58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/LaunchAtLogin.swift"; sourceTree = SOURCE_ROOT; };
+		58E1CD0129BEB0E400000400 /* swiftui-app/StatusAnnouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/StatusAnnouncer.swift"; sourceTree = SOURCE_ROOT; };
 		58E1CC1029BEB2200000020E /* swiftui-app/login-item/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "swiftui-app/login-item/Info.plist"; sourceTree = SOURCE_ROOT; };
 		58E1CC1129BEB2200000020F /* swiftui-app/login-item/LoginItemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swiftui-app/login-item/LoginItemApp.swift"; sourceTree = SOURCE_ROOT; };
 		58E1CC1529BEB23000000217 /* UpNowLoginItem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UpNowLoginItem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +86,7 @@
 				58E1CBDD29BEB0E400000103 /* swiftui-app/StatusBarIcon.swift */,
 				58E1CBF529BEB0E400000120 /* swiftui-app/StatusIconImage.swift */,
 				58E1CC0929BEB1F000000200 /* swiftui-app/LaunchAtLogin.swift */,
+				58E1CD0129BEB0E400000400 /* swiftui-app/StatusAnnouncer.swift */,
 				58E1CBD829BEB0E400000103 /* swiftui-app/Info.plist */,
 			);
 			name = UpNow;
@@ -210,6 +213,7 @@
 				58E1CBDB29BEB0E400000101 /* swiftui-app/ConnectivityMonitor.swift in Sources */,
 				58E1CBDA29BEB0E400000100 /* swiftui-app/UpNowApp.swift in Sources */,
 				58E1CC0A29BEB1F000000201 /* swiftui-app/LaunchAtLogin.swift in Sources */,
+				58E1CD0229BEB0E400000401 /* swiftui-app/StatusAnnouncer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
