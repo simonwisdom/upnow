@@ -15,6 +15,11 @@ struct MenuContentView: View {
                     .accessibilityHidden(true)
                 Text(monitor.statusText)
                     .font(.headline)
+                if let latency = monitor.latencyText {
+                    Text("· \(latency)")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
             }
 
             if let ts = monitor.lastUpdated {
@@ -48,8 +53,11 @@ struct MenuContentView: View {
                     Text("No history yet")
                         .foregroundColor(.secondary)
                 } else {
-                    ForEach(Array(monitor.history.prefix(10))) { entry in
-                        Text(historyLine(entry))
+                    ForEach(Array(monitor.history.enumerated()), id: \.element.id) { index, entry in
+                        // Each entry lasted until the next-newer one began;
+                        // the newest is still ongoing.
+                        let endDate = index == 0 ? Date() : monitor.history[index - 1].date
+                        Text(historyLine(entry, endDate: endDate))
                             .foregroundColor(color(for: entry.state))
                     }
                     Divider()
@@ -107,7 +115,7 @@ struct MenuContentView: View {
         }
     }
 
-    private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry) -> String {
+    private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry, endDate: Date) -> String {
         let rel = RelativeDateTimeFormatter()
         rel.unitsStyle = .short
         let when = rel.localizedString(for: entry.date, relativeTo: Date())
@@ -127,7 +135,21 @@ struct MenuContentView: View {
             label = "Login required"
             symbol = "⚠️"
         }
-        return "\(symbol) \(label) — \(when)"
+        let duration = formatDuration(endDate.timeIntervalSince(entry.date))
+        return "\(symbol) \(label) for \(duration) — \(when)"
+    }
+
+    private func formatDuration(_ seconds: TimeInterval) -> String {
+        let total = max(0, Int(seconds.rounded()))
+        if total < 60 { return "\(total)s" }
+        let minutes = total / 60
+        if minutes < 60 {
+            let s = total % 60
+            return s > 0 ? "\(minutes)m \(s)s" : "\(minutes)m"
+        }
+        let hours = minutes / 60
+        let m = minutes % 60
+        return m > 0 ? "\(hours)h \(m)m" : "\(hours)h"
     }
 
     private func openNetworkSettings() {
