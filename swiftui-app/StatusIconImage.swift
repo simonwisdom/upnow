@@ -1,7 +1,7 @@
 import AppKit
 
 enum StatusIconImage {
-    static func make(for state: OnlineState, size points: CGFloat = 18) -> NSImage {
+    static func make(for state: OnlineState, metered: Bool = false, size points: CGFloat = 18) -> NSImage {
         let size = NSSize(width: points, height: points)
         let image = NSImage(size: size)
         image.lockFocus()
@@ -55,6 +55,18 @@ enum StatusIconImage {
             arcPath.appendArc(withCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle)
             NSColor.systemOrange.setStroke()
             arcPath.stroke()
+        }
+
+        // Hotspot/metered badge: small orange dot at bottom-right, with a
+        // punched-out gap so it reads against any of the state glyphs.
+        if metered, let cg = NSGraphicsContext.current?.cgContext {
+            let diameter: CGFloat = 7
+            let badge = CGRect(x: size.width - diameter, y: 0, width: diameter, height: diameter)
+            cg.setBlendMode(.clear)
+            cg.fillEllipse(in: badge.insetBy(dx: -1.5, dy: -1.5))
+            cg.setBlendMode(.normal)
+            cg.setFillColor(NSColor.systemOrange.cgColor)
+            cg.fillEllipse(in: badge)
         }
 
         image.unlockFocus()

@@ -13,6 +13,9 @@ final class ConnectivityMonitor: ObservableObject {
     @Published private(set) var lastUpdated: Date? = nil
     @Published private(set) var history: [HistoryEntry] = []
     @Published private(set) var latency: TimeInterval? = nil
+    // True on personal hotspots / metered connections as flagged by the system.
+    @Published private(set) var isExpensive = false
+    @Published private(set) var isConstrained = false
 
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "ConnectivityMonitor")
@@ -46,6 +49,8 @@ final class ConnectivityMonitor: ObservableObject {
             guard let self else { return }
             DispatchQueue.main.async {
                 self.lastPath = path
+                self.isExpensive = path.isExpensive
+                self.isConstrained = path.isConstrained
                 if path.status == .satisfied {
                     // Show "checking" only if we weren't already online;
                     // otherwise re-probe silently to avoid icon flicker.

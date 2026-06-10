@@ -4,6 +4,7 @@ import ServiceManagement
 
 struct MenuContentView: View {
     @ObservedObject var monitor: ConnectivityMonitor
+    @ObservedObject var power: PowerMonitor
     @StateObject private var login = LaunchAtLogin()
 
     var body: some View {
@@ -24,6 +25,19 @@ struct MenuContentView: View {
 
             if let ts = monitor.lastUpdated {
                 Text("Last checked: \(formatted(ts))")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            // Travel signals: only shown when something is off-nominal, so the
+            // menu stays quiet on mains power and normal wifi.
+            if case .weak(let watts) = power.externalPower {
+                Text("⚡️ Weak power source — \(watts) W")
+                    .font(.caption)
+                    .foregroundColor(.orange)
+            }
+            if monitor.isExpensive || monitor.isConstrained {
+                Text("📶 Hotspot / metered connection")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -64,6 +78,16 @@ struct MenuContentView: View {
                     }
                 }
             }
+
+            // Asks for an admin password (pmset needs root); state updates via
+            // the system power-state notification once the change lands.
+            Toggle(isOn: Binding(
+                get: { power.lowPowerModeEnabled },
+                set: { power.setLowPowerMode($0) }
+            )) {
+                Text("Low Power Mode")
+            }
+            .disabled(power.isTogglingLowPowerMode)
 
             Toggle(isOn: Binding(
                 get: { login.enabled },
