@@ -28,7 +28,7 @@ UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’
 
 ## Privacy
 - No analytics or telemetry.
-- Connectivity checks use short HEAD requests to `apple.com` and `cloudflare.com`.
+- Connectivity checks fetch the standard captive-portal endpoints `captive.apple.com/hotspot-detect.html` and `www.gstatic.com/generate_204`.
 
 ## Details
 - App source lives in `swiftui-app/`. See `swiftui-app/README.md` for implementation notes.

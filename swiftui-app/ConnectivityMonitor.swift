@@ -32,19 +32,18 @@ final class ConnectivityMonitor: ObservableObject {
     func start() {
         monitor.pathUpdateHandler = { [weak self] path in
             guard let self else { return }
-            self.lastPath = path
-            // When link is up, actively probe; otherwise mark offline immediately.
-            if path.status == .satisfied {
-                DispatchQueue.main.async {
-                    self.state = .checking
-                }
-                self.startProbe()
-            } else {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                self.lastPath = path
+                if path.status == .satisfied {
+                    // Show "checking" only if we weren't already online;
+                    // otherwise re-probe silently to avoid icon flicker.
+                    if self.state != .online {
+                        self.state = .checking
+                    }
+                    self.startProbe()
+                } else {
                     self.cancelProbe()
-                    self.state = .offline
-                    self.lastUpdated = Date()
-                    self.record(.offline)
+                    self.setState(.offline)
                 }
             }
         }
@@ -58,16 +57,21 @@ final class ConnectivityMonitor: ObservableObject {
     }
 
     func refresh() {
-        // Manual check: if link is up, run probe; otherwise show offline.
-        if lastPath?.status == .satisfied {
-            DispatchQueue.main.async { self.state = .checking }
-            startProbe()
-        } else {
-            DispatchQueue.main.async {
+        check(showChecking: true)
+    }
+
+    // Run a connectivity check. Background (ticker) checks keep the current
+    // state visible while probing; manual checks show "checking" feedback.
+    private func check(showChecking: Bool) {
+        DispatchQueue.main.async {
+            if self.lastPath?.status == .satisfied {
+                if showChecking {
+                    self.state = .checking
+                }
+                self.startProbe()
+            } else {
                 self.cancelProbe()
-                self.state = .offline
-                self.lastUpdated = Date()
-                self.record(.offline)
+                self.setState(.offline)
             }
         }
     }
@@ -77,19 +81,17 @@ final class ConnectivityMonitor: ObservableObject {
         probeTask = Task { [weak self] in
             guard let self else { return }
             let result = await self.performProbe()
+            // A newer probe may have superseded this one; don't apply stale results.
+            if Task.isCancelled { return }
             await MainActor.run {
                 switch result {
                 case .success:
-                    self.state = .online
-                    self.record(.online)
+                    self.setState(.online)
                 case .captive:
-                    self.state = .captive
-                    self.record(.captive)
+                    self.setState(.captive)
                 case .failed:
-                    self.state = .offline
-                    self.record(.offline)
+                    self.setState(.offline)
                 }
-                self.lastUpdated = Date()
             }
         }
     }
@@ -105,9 +107,7 @@ final class ConnectivityMonitor: ObservableObject {
             guard let self else { return }
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 20 * 1_000_000_000)
-                await MainActor.run {
-                    self.refresh()
-                }
+                self.check(showChecking: false)
             }
         }
     }
@@ -119,8 +119,9 @@ final class ConnectivityMonitor: ObservableObject {
 
     private enum ProbeResult { case success, captive, failed }
 
-    // Perform connectivity probe per original behavior:
-    // HEAD https://apple.com, if it fails, HEAD https://cloudflare.com. Both fail => offline; otherwise online.
+    // Probe endpoints with known responses over plain HTTP (what captive
+    // portals intercept). An unexpected HTTP response means a portal is in
+    // the way; no response at all means offline.
     private func performProbe() async -> ProbeResult {
         let config = URLSessionConfiguration.ephemeral
         config.timeoutIntervalForRequest = 3.0
@@ -129,31 +130,57 @@ final class ConnectivityMonitor: ObservableObject {
         config.allowsConstrainedNetworkAccess = true
         config.allowsExpensiveNetworkAccess = true
         let session = URLSession(configuration: config)
+        defer { session.finishTasksAndInvalidate() }
 
-        @Sendable func head(_ urlString: String) async -> Bool {
-            guard let url = URL(string: urlString) else { return false }
+        enum EndpointResult { case expected, unexpected, unreachable }
+
+        @Sendable func fetch(_ urlString: String,
+                             isExpected: @Sendable (HTTPURLResponse, Data) -> Bool) async -> EndpointResult {
+            guard let url = URL(string: urlString) else { return .unreachable }
             var req = URLRequest(url: url)
-            req.httpMethod = "HEAD"
             req.cachePolicy = .reloadIgnoringLocalCacheData
             do {
-                let (_, response) = try await session.data(for: req)
-                // Treat any HTTP response as success (common portals may return 30x/200)
-                if response is HTTPURLResponse { return true }
-                return false
+                let (data, response) = try await session.data(for: req)
+                guard let http = response as? HTTPURLResponse else { return .unreachable }
+                return isExpected(http, data) ? .expected : .unexpected
             } catch {
-                return false
+                return .unreachable
             }
         }
 
-        if await head("https://apple.com") { return .success }
-        if await head("https://cloudflare.com") { return .success }
-        return .failed
+        // Apple's captive-check endpoint returns a tiny page containing "Success".
+        let apple = await fetch("http://captive.apple.com/hotspot-detect.html") { _, data in
+            String(data: data, encoding: .utf8)?.contains("Success") == true
+        }
+        if apple == .expected { return .success }
+
+        // Fallback: must return exactly 204.
+        let gstatic = await fetch("http://www.gstatic.com/generate_204") { http, _ in
+            http.statusCode == 204
+        }
+        switch gstatic {
+        case .expected:
+            return .success
+        case .unexpected:
+            return .captive
+        case .unreachable:
+            return apple == .unexpected ? .captive : .failed
+        }
+    }
+
+    @MainActor
+    private func setState(_ newState: OnlineState) {
+        state = newState
+        lastUpdated = Date()
+        record(newState)
     }
 
     @MainActor
     private func record(_ newState: OnlineState) {
         // Do not record transient checking states
         guard newState != .checking else { return }
+        // Only record transitions; repeated identical results are noise.
+        if history.first?.state == newState { return }
         history.insert(HistoryEntry(date: Date(), state: newState), at: 0)
         if history.count > 10 { history.removeLast(history.count - 10) }
     }
@@ -161,19 +188,6 @@ final class ConnectivityMonitor: ObservableObject {
     @MainActor
     func clearHistory() {
         history.removeAll()
-    }
-
-    var menuBarSymbolName: String {
-        switch state {
-        case .checking:
-            return "arrow.triangle.2.circlepath"
-        case .captive:
-            return "exclamationmark.triangle"
-        case .online:
-            return "wifi"
-        case .offline:
-            return "wifi.slash"
-        }
     }
 
     var statusText: String {
