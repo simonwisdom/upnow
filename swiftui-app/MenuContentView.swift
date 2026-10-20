@@ -6,6 +6,7 @@ struct MenuContentView: View {
     @ObservedObject var monitor: ConnectivityMonitor
     @ObservedObject var power: PowerMonitor
     @StateObject private var login = LaunchAtLogin()
+    @AppStorage(StatusPalette.colorblindDefaultsKey) private var colorblind = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -96,6 +97,10 @@ struct MenuContentView: View {
                 Text("Launch at Login")
             }
 
+            Toggle(isOn: $colorblind) {
+                Text("Colorblind-Friendly Colors")
+            }
+
             Button("Open Network Settings") {
                 openNetworkSettings()
             }
@@ -125,16 +130,7 @@ struct MenuContentView: View {
     }
 
     private func condensedEmojiLine() -> String {
-        recentStates().map { emoji(for: $0) }.joined(separator: " ")
-    }
-
-    private func emoji(for state: OnlineState) -> String {
-        switch state {
-        case .online: return "🟢"
-        case .offline: return "🟥"
-        case .checking: return "🟡"
-        case .captive: return "⚠️"
-        }
+        recentStates().map { StatusPalette.emoji(for: $0, colorblind: colorblind) }.joined(separator: " ")
     }
 
     private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry, endDate: Date) -> String {
@@ -142,21 +138,13 @@ struct MenuContentView: View {
         rel.unitsStyle = .short
         let when = rel.localizedString(for: entry.date, relativeTo: Date())
         let label: String
-        let symbol: String
         switch entry.state {
-        case .online:
-            label = "Online"
-            symbol = "🟢"
-        case .offline:
-            label = "Offline"
-            symbol = "🟥"
-        case .checking:
-            label = "Checking"
-            symbol = "🟡"
-        case .captive:
-            label = "Login required"
-            symbol = "⚠️"
+        case .online: label = "Online"
+        case .offline: label = "Offline"
+        case .checking: label = "Checking"
+        case .captive: label = "Login required"
         }
+        let symbol = StatusPalette.emoji(for: entry.state, colorblind: colorblind)
         let duration = formatDuration(endDate.timeIntervalSince(entry.date))
         return "\(symbol) \(label) for \(duration) — \(when)"
     }
@@ -181,11 +169,6 @@ struct MenuContentView: View {
     }
 
     private func color(for state: OnlineState) -> Color {
-        switch state {
-        case .online: return .green
-        case .offline: return .red
-        case .checking: return .yellow
-        case .captive: return .orange
-        }
+        Color(nsColor: StatusPalette.color(for: state, colorblind: colorblind))
     }
 }
