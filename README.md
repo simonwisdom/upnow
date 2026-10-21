@@ -9,7 +9,7 @@
 <p align="center"><a href="https://github.com/simonwisdom/upnow/releases/latest/download/UpNow.zip"><b>Download for macOS</b></a> · macOS 13 or later</p>
 
 <p align="center">
-  <img src="docs/menubar.gif" width="160" alt="The menu bar icon turns red with an Offline label, then green with Back online">
+  <img src="docs/menubar.gif" width="160" alt="The menu bar icon turns red with an Offline label, then a periscope pops up with Back online">
 </p>
 
 <p align="center">
