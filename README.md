@@ -9,6 +9,12 @@
   <sub><b>Drops, at a glance.</b> The dot turns red, and a periscope pops up when you're back.</sub>
 </p>
 
+## Why I made it
+
+I was trying to work on my laptop on train Wi-Fi, and it kept dropping out. I wasted a lot of time wondering whether I was back online. UpNow puts the answer in the menu bar, so I never have to wonder.
+
+## What it does
+
 - Clear icon in the menu bar (color + shape)
 - Online or not, how long for, and latency, in one glance
 - Today's drops in one line; click it for the times
