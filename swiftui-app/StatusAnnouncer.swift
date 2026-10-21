@@ -32,7 +32,7 @@ final class StatusAnnouncer: ObservableObject {
     private func label(for state: OnlineState) -> String {
         switch state {
         case .offline: return "Offline"
-        case .captive: return "Sign-in required"
+        case .captive: return "Wi-Fi login needed"
         case .online: return "Back online"
         case .checking: return "" // filtered out upstream
         }

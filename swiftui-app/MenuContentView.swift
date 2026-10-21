@@ -18,7 +18,8 @@ struct MenuContentView: View {
                 Text(monitor.statusText)
                     .font(.headline)
                 if let detail = statusDetail() {
-                    Text("· \(detail)")
+                    // The native menu puts this on its own line, so no leading "·".
+                    Text(detail)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
