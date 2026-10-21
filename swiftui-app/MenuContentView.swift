@@ -49,8 +49,7 @@ struct MenuContentView: View {
                         .foregroundColor(.secondary)
                 } else {
                     ForEach(monitor.history) { entry in
-                        // An open entry (no endDate) is still ongoing.
-                        Text(historyLine(entry, endDate: entry.endDate ?? Date()))
+                        Text(historyLine(entry))
                             .foregroundColor(color(for: entry.state))
                     }
                     Divider()
@@ -99,15 +98,16 @@ struct MenuContentView: View {
     }
 
     private func formatted(_ date: Date) -> String {
+        // The formatter says "in 0 sec." for a check that just finished.
+        if Date().timeIntervalSince(date) < 5 { return "just now" }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .short
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 
-    private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry, endDate: Date) -> String {
-        let rel = RelativeDateTimeFormatter()
-        rel.unitsStyle = .short
-        let when = rel.localizedString(for: entry.date, relativeTo: Date())
+    // "🟢 Online 16:38 – now · 3m 15s": clock times read more plainly than a
+    // duration next to a relative start time.
+    private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry) -> String {
         let label: String
         switch entry.state {
         case .online: label = "Online"
@@ -116,8 +116,18 @@ struct MenuContentView: View {
         case .captive: label = "Login required"
         }
         let symbol = StatusPalette.emoji(for: entry.state, colorblind: colorblind)
-        let duration = formatDuration(endDate.timeIntervalSince(entry.date))
-        return "\(symbol) \(label) for \(duration) — \(when)"
+        // An open entry (no endDate) is still ongoing.
+        let end = entry.endDate.map(clockTime) ?? "now"
+        let duration = formatDuration((entry.endDate ?? Date()).timeIntervalSince(entry.date))
+        return "\(symbol) \(label) \(clockTime(entry.date)) – \(end) · \(duration)"
+    }
+
+    // "16:38" today, "Tue 16:38" on an earlier day.
+    private func clockTime(_ date: Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return date.formatted(date: .omitted, time: .shortened)
+        }
+        return date.formatted(.dateTime.weekday(.abbreviated).hour().minute())
     }
 
     private func formatDuration(_ seconds: TimeInterval) -> String {
