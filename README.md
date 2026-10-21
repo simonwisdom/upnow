@@ -4,12 +4,10 @@
 
 <p align="center"><a href="https://github.com/simonwisdom/upnow/releases/latest/download/UpNow.zip"><b>Download for macOS</b></a> · Free · macOS 13 or later</p>
 
-<table>
-  <tr>
-    <td align="center" valign="top" width="50%"><img src="docs/menubar-card.gif" width="300" alt="The menu bar turns red with Offline, then a periscope pops up with Back online"><br><sub><b>Drops, at a glance.</b> The dot turns red, and a periscope pops up when you're back.</sub></td>
-    <td align="center" valign="top" width="50%"><img src="docs/welcome.gif" width="300" alt="The welcome window, with the periscope rising out of the water"><br><sub><b>A warm welcome.</b> Shown once, so you know where to look.</sub></td>
-  </tr>
-</table>
+<p align="center">
+  <img src="docs/menubar-card.gif" width="300" alt="The menu bar turns red with Offline, then a periscope pops up with Back online"><br>
+  <sub><b>Drops, at a glance.</b> The dot turns red, and a periscope pops up when you're back.</sub>
+</p>
 
 - Clear icon in the menu bar (color + shape)
 - Status, latency and when it last checked, in one line
