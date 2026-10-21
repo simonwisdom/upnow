@@ -43,15 +43,22 @@ struct MenuContentView: View {
                 monitor.refresh()
             }
 
+            // Being online is the normal state, so History leads with how
+            // long it has lasted and then lists only the drops.
             Menu("History") {
-                if monitor.history.isEmpty {
-                    Text("No history yet")
+                Text(currentStretchLine())
+                Divider()
+                let drops = stretches().filter { $0.state == .offline || $0.state == .captive }
+                if drops.isEmpty {
+                    Text("No drops yet")
                         .foregroundColor(.secondary)
                 } else {
-                    ForEach(monitor.history) { entry in
-                        Text(historyLine(entry))
-                            .foregroundColor(color(for: entry.state))
+                    ForEach(drops) { drop in
+                        Text(dropLine(drop))
+                            .foregroundColor(color(for: drop.state))
                     }
+                }
+                if !monitor.history.isEmpty {
                     Divider()
                     Button("Clear History") {
                         monitor.clearHistory()
@@ -105,29 +112,67 @@ struct MenuContentView: View {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 
-    // "🟢 Online 16:38 – now · 3m 15s": clock times read more plainly than a
-    // duration next to a relative start time.
-    private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry) -> String {
-        let label: String
-        switch entry.state {
-        case .online: label = "Online"
-        case .offline: label = "Offline"
-        case .checking: label = "Checking"
-        case .captive: label = "Login required"
-        }
-        let symbol = StatusPalette.emoji(for: entry.state, colorblind: colorblind)
-        // An open entry (no endDate) is still ongoing.
-        let end = entry.endDate.map(clockTime) ?? "now"
-        let duration = formatDuration((entry.endDate ?? Date()).timeIntervalSince(entry.date))
-        return "\(symbol) \(label) \(clockTime(entry.date)) – \(end) · \(duration)"
+    // A run of one state. end is nil while it is still going.
+    private struct Stretch: Identifiable {
+        let state: OnlineState
+        let start: Date
+        let end: Date?
+        var id: Date { start }
     }
 
-    // "16:38" today, "Tue 16:38" on an earlier day.
-    private func clockTime(_ date: Date) -> String {
-        if Calendar.current.isDateInToday(date) {
-            return date.formatted(date: .omitted, time: .shortened)
+    // History (newest first) with back-to-back entries in the same state,
+    // which an app restart splits, joined into one stretch.
+    private func stretches() -> [Stretch] {
+        var result: [Stretch] = []
+        for entry in monitor.history {
+            if let last = result.last, last.state == entry.state {
+                result[result.count - 1] = Stretch(state: entry.state, start: entry.date, end: last.end)
+            } else {
+                result.append(Stretch(state: entry.state, start: entry.date, end: entry.endDate))
+            }
         }
-        return date.formatted(.dateTime.weekday(.abbreviated).hour().minute())
+        return result
+    }
+
+    // "Online for 2h 14m"
+    private func currentStretchLine() -> String {
+        guard let current = stretches().first, current.end == nil else {
+            return monitor.statusText
+        }
+        return "\(label(for: current.state)) for \(formatDuration(Date().timeIntervalSince(current.start)))"
+    }
+
+    // "🔴 Offline   4:12 – 4:15 PM · 3m"
+    private func dropLine(_ drop: Stretch) -> String {
+        let symbol = StatusPalette.emoji(for: drop.state, colorblind: colorblind)
+        let duration = formatDuration((drop.end ?? Date()).timeIntervalSince(drop.start))
+        return "\(symbol) \(label(for: drop.state))   \(timeRange(drop.start, drop.end)) · \(duration)"
+    }
+
+    // "4:12 – 4:15 PM", "Yesterday 9:40 – 9:41 AM", "4:12 PM – now"
+    private func timeRange(_ start: Date, _ end: Date?) -> String {
+        let calendar = Calendar.current
+        let day: String
+        if calendar.isDateInToday(start) {
+            day = ""
+        } else if calendar.isDateInYesterday(start) {
+            day = "Yesterday "
+        } else {
+            day = start.formatted(.dateTime.weekday(.abbreviated)) + " "
+        }
+        guard let end else {
+            return day + start.formatted(date: .omitted, time: .shortened) + " – now"
+        }
+        return day + (start..<max(start, end)).formatted(.interval.hour().minute())
+    }
+
+    private func label(for state: OnlineState) -> String {
+        switch state {
+        case .online: return "Online"
+        case .offline: return "Offline"
+        case .checking: return "Checking"
+        case .captive: return "Wi-Fi login"
+        }
     }
 
     private func formatDuration(_ seconds: TimeInterval) -> String {

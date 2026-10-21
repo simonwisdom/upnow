@@ -3,9 +3,9 @@ UpNow — macOS menu bar connectivity at a glance
 UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’re online, offline, or need to sign in to a captive portal. It uses clear, color‑coded symbols and a compact history of recent checks so you can tell at a glance what’s happening.
 
 Features
-- Fast status: Online, Offline, Checking, or Login Required.
+- Fast status: Online, Offline, Checking, or Wi-Fi login needed.
 - Clear icon: Always‑visible color icon in the menu bar.
-- History: Recent outages and how long they lasted.
+- History: How long you have been online, then each drop and how long it lasted.
 - Manual refresh: “Check Now” from the menu.
 - Launch at Login: Optional background helper.
 - Privacy‑friendly: No analytics. Checks fetch Apple's and Google's standard captive-portal pages.

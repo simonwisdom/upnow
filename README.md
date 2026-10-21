@@ -1,10 +1,10 @@
 ## UpNow
 
-UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’re online, offline, or need to sign in to a captive portal — at a glance.
+UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’re online, offline, or need to sign in to a Wi-Fi login page — at a glance.
 
 - Clear icon in the menu bar (color + shape)
 - Status, latency and when it last checked, in one line
-- History of recent outages and how long they lasted
+- History: how long you have been online, then each drop and how long it lasted
 - A heads-up when you're on a hotspot or a weak power source
 - Colorblind-friendly colors and Launch at Login, under Settings
 

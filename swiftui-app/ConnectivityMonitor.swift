@@ -225,7 +225,7 @@ final class ConnectivityMonitor: ObservableObject {
             history[0].endDate = Date()
         }
         history.insert(HistoryEntry(date: Date(), state: newState), at: 0)
-        if history.count > 10 { history.removeLast(history.count - 10) }
+        if history.count > 40 { history.removeLast(history.count - 40) }
         saveHistory()
     }
 
@@ -265,7 +265,7 @@ final class ConnectivityMonitor: ObservableObject {
         case .checking:
             return "Checking…"
         case .captive:
-            return "Login required"
+            return "Wi-Fi login needed"
         case .online:
             return "Online"
         case .offline:
