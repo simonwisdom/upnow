@@ -5,7 +5,7 @@ UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’
 Features
 - Fast status: Online, Offline, Checking, or Wi-Fi login needed.
 - Clear icon: Always‑visible color icon in the menu bar.
-- History: How long you have been online, then each drop and how long it lasted.
+- Drops: Today's drops in one line; click it for each drop's times.
 - Manual refresh: “Check Now” from the menu.
 - Launch at Login: Optional background helper.
 - Privacy‑friendly: No analytics. Checks fetch Apple's and Google's standard captive-portal pages.

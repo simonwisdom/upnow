@@ -10,8 +10,8 @@
 </p>
 
 - Clear icon in the menu bar (color + shape)
-- Status, latency and when it last checked, in one line
-- History: how long you have been online, then each drop and how long it lasted
+- Online or not, how long for, and latency, in one glance
+- Today's drops in one line; click it for the times
 - A heads-up when you're on a hotspot or a weak power source
 - Colorblind-friendly colors and Launch at Login, under Settings
 
