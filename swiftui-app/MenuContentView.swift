@@ -1,6 +1,5 @@
 import SwiftUI
 import AppKit
-import ServiceManagement
 
 struct MenuContentView: View {
     @ObservedObject var monitor: ConnectivityMonitor
@@ -9,109 +8,166 @@ struct MenuContentView: View {
     @AppStorage(StatusPalette.colorblindDefaultsKey) private var colorblind = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Circle()
-                    .fill(color(for: monitor.state))
-                    .frame(width: 10, height: 10)
-                    .accessibilityHidden(true)
+        VStack(spacing: 0) {
+            header
+            VStack(alignment: .leading, spacing: 0) {
+                travelSignals
+                drops
+            }
+            .padding(.vertical, 8)
+            Divider()
+            footer
+        }
+        .frame(width: 320)
+        .background(Color(nsColor: .windowBackgroundColor))
+    }
+
+    // The brand header: the icon's blue and waves, with the state up front.
+    private var header: some View {
+        ZStack(alignment: .topLeading) {
+            LinearGradient(colors: [Color(red: 0.29, green: 0.66, blue: 1.0),
+                                    Color(red: 0.11, green: 0.44, blue: 0.95),
+                                    Color(red: 0.04, green: 0.25, blue: 0.72)],
+                           startPoint: .topLeading, endPoint: .bottomTrailing)
+            WaveShape(amplitude: 0.35).fill(Color.white.opacity(0.18))
+                .frame(height: 30).frame(maxHeight: .infinity, alignment: .bottom)
+            WaveShape(amplitude: 0.5).fill(Color(nsColor: .windowBackgroundColor))
+                .frame(height: 18).frame(maxHeight: .infinity, alignment: .bottom)
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .frame(width: 64, height: 64)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.top, 12).padding(.trailing, 12)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 6) {
+                    Circle().fill(color(for: monitor.state)).frame(width: 8, height: 8)
+                    Text(pillText).font(.system(size: 11, weight: .semibold))
+                }
+                .padding(.horizontal, 9).padding(.vertical, 3)
+                .background(Capsule().fill(Color.white.opacity(0.2)))
+                .padding(.bottom, 5)
                 Text(monitor.statusText)
-                    .font(.headline)
-                if let detail = statusDetail() {
-                    // The native menu puts this on its own line, so no leading "·".
-                    Text(detail)
-                        .font(.subheadline)
+                    .font(.system(size: 24, weight: .heavy))
+                if let detail = headerDetail() {
+                    Text(detail).font(.system(size: 12)).opacity(0.9)
+                }
+            }
+            .foregroundColor(.white)
+            .padding(16)
+        }
+        .frame(height: 132)
+    }
+
+    // Travel signals: only shown when something is off-nominal, so the
+    // panel stays quiet on mains power and normal wifi.
+    @ViewBuilder private var travelSignals: some View {
+        if case .weak(let watts) = power.externalPower {
+            signalRow("bolt.fill", "Weak power source, \(watts) W", .orange)
+        }
+        if monitor.isExpensive || monitor.isConstrained {
+            signalRow("personalhotspot", "Hotspot or metered connection", .secondary)
+        }
+    }
+
+    private func signalRow(_ symbol: String, _ text: String, _ tint: Color) -> some View {
+        Label(text, systemImage: symbol)
+            .font(.system(size: 12))
+            .foregroundColor(tint)
+            .padding(.horizontal, 16).padding(.vertical, 4)
+    }
+
+    // Being online is the normal state, so the list shows only the drops.
+    @ViewBuilder private var drops: some View {
+        Text("RECENT DROPS")
+            .font(.system(size: 11, weight: .semibold))
+            .foregroundColor(.secondary)
+            .padding(.horizontal, 16).padding(.top, 2).padding(.bottom, 4)
+        let drops = stretches().filter { $0.state == .offline || $0.state == .captive }
+        if drops.isEmpty {
+            HStack(spacing: 8) {
+                Image(nsImage: PeriscopeGlyph.make(size: 16, colorblind: colorblind))
+                Text("All clear, nothing spotted")
+            }
+            .font(.system(size: 13))
+            .padding(.horizontal, 16).padding(.vertical, 5)
+        } else {
+            ForEach(drops.prefix(6)) { drop in
+                HStack(spacing: 8) {
+                    Circle().fill(color(for: drop.state)).frame(width: 9, height: 9)
+                    Text(label(for: drop.state))
+                    Spacer(minLength: 8)
+                    Text("\(timeRange(drop.start, drop.end)) · \(formatDuration((drop.end ?? Date()).timeIntervalSince(drop.start)))")
                         .foregroundColor(.secondary)
+                        .monospacedDigit()
                 }
-            }
-
-            // Travel signals: only shown when something is off-nominal, so the
-            // menu stays quiet on mains power and normal wifi.
-            if case .weak(let watts) = power.externalPower {
-                Text("⚡️ Weak power source — \(watts) W")
-                    .font(.caption)
-                    .foregroundColor(.orange)
-            }
-            if monitor.isExpensive || monitor.isConstrained {
-                Text("📶 Hotspot / metered connection")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-
-            Divider()
-
-            Button("Check Now") {
-                monitor.refresh()
-            }
-
-            // Being online is the normal state, so History leads with how
-            // long it has lasted and then lists only the drops.
-            Menu("History") {
-                Text(currentStretchLine())
-                Divider()
-                let drops = stretches().filter { $0.state == .offline || $0.state == .captive }
-                if drops.isEmpty {
-                    // Inline in the text: the native menu drops a Label's icon.
-                    Text(Image(nsImage: PeriscopeGlyph.make(size: 16, colorblind: colorblind)))
-                        + Text("  All clear, nothing spotted")
-                } else {
-                    ForEach(drops) { drop in
-                        Text(dropLine(drop))
-                            .foregroundColor(color(for: drop.state))
-                    }
-                }
-                if !monitor.history.isEmpty {
-                    Divider()
-                    Button("Clear History") {
-                        monitor.clearHistory()
-                    }
-                }
-            }
-
-            Menu("Settings") {
-                Toggle(isOn: Binding(
-                    get: { login.enabled },
-                    set: { login.setEnabled($0) }
-                )) {
-                    Text("Launch at Login")
-                }
-
-                Toggle(isOn: $colorblind) {
-                    Text("Colorblind-Friendly Colors")
-                }
-
-                Divider()
-
-                Button("Open Network Settings") {
-                    openNetworkSettings()
-                }
-            }
-
-            Divider()
-
-            Button("Quit") {
-                NSApp.terminate(nil)
+                .font(.system(size: 13))
+                .lineLimit(1)
+                .padding(.horizontal, 16).padding(.vertical, 4)
             }
         }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 10)
-        .frame(minWidth: 220)
     }
 
-    // "24 ms · checked 1 min. ago", or whichever half is known.
-    private func statusDetail() -> String? {
+    private var footer: some View {
+        HStack(spacing: 8) {
+            Button {
+                monitor.refresh()
+            } label: {
+                Text("Check Now").frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .tint(Color(red: 0.04, green: 0.52, blue: 1.0)) // brand blue, not the accent colour
+
+            Menu {
+                Toggle("Launch at Login", isOn: Binding(
+                    get: { login.enabled },
+                    set: { login.setEnabled($0) }
+                ))
+                Toggle("Colorblind-Friendly Colors", isOn: $colorblind)
+                Divider()
+                Button("Open Network Settings") { openNetworkSettings() }
+                if !monitor.history.isEmpty {
+                    Button("Clear History") { monitor.clearHistory() }
+                }
+            } label: {
+                Image(systemName: "gearshape")
+            }
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
+            .fixedSize()
+            .help("Settings")
+            .padding(.horizontal, 6)
+
+            Button {
+                NSApp.terminate(nil)
+            } label: {
+                Image(systemName: "power")
+            }
+            .buttonStyle(.borderless)
+            .help("Quit UpNow")
+            .padding(.horizontal, 4)
+        }
+        .padding(12)
+    }
+
+    private var pillText: String {
+        switch monitor.state {
+        case .online: return "All good"
+        case .offline: return "No connection"
+        case .captive: return "Sign in to the Wi-Fi"
+        case .checking: return "Checking"
+        }
+    }
+
+    // "for 2h 26m · 23 ms", or whichever part is known.
+    private func headerDetail() -> String? {
         var parts: [String] = []
+        if let current = stretches().first, current.end == nil, current.state == monitor.state {
+            parts.append("for \(formatDuration(Date().timeIntervalSince(current.start)))")
+        }
         if let latency = monitor.latencyText { parts.append(latency) }
-        if let ts = monitor.lastUpdated { parts.append("checked \(formatted(ts))") }
         return parts.isEmpty ? nil : parts.joined(separator: " · ")
-    }
-
-    private func formatted(_ date: Date) -> String {
-        // The formatter says "in 0 sec." for a check that just finished.
-        if Date().timeIntervalSince(date) < 5 { return "just now" }
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .short
-        return formatter.localizedString(for: date, relativeTo: Date())
     }
 
     // A run of one state. end is nil while it is still going.
@@ -134,21 +190,6 @@ struct MenuContentView: View {
             }
         }
         return result
-    }
-
-    // "Online for 2h 14m"
-    private func currentStretchLine() -> String {
-        guard let current = stretches().first, current.end == nil else {
-            return monitor.statusText
-        }
-        return "\(label(for: current.state)) for \(formatDuration(Date().timeIntervalSince(current.start)))"
-    }
-
-    // "🔴 Offline   4:12 – 4:15 PM · 3m"
-    private func dropLine(_ drop: Stretch) -> String {
-        let symbol = StatusPalette.emoji(for: drop.state, colorblind: colorblind)
-        let duration = formatDuration((drop.end ?? Date()).timeIntervalSince(drop.start))
-        return "\(symbol) \(label(for: drop.state))   \(timeRange(drop.start, drop.end)) · \(duration)"
     }
 
     // "4:12 – 4:15 PM", "Yesterday 9:40 – 9:41 AM", "4:12 PM – now"
@@ -198,5 +239,27 @@ struct MenuContentView: View {
 
     private func color(for state: OnlineState) -> Color {
         Color(nsColor: StatusPalette.color(for: state, colorblind: colorblind))
+    }
+}
+
+// A single soft wave across the bottom of the header, like the app icon.
+private struct WaveShape: Shape {
+    var amplitude: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let mid = rect.height * 0.5
+        let rise = rect.height * amplitude
+        path.move(to: CGPoint(x: 0, y: mid))
+        path.addCurve(to: CGPoint(x: rect.width * 0.5, y: mid),
+                      control1: CGPoint(x: rect.width * 0.17, y: mid - rise),
+                      control2: CGPoint(x: rect.width * 0.33, y: mid + rise))
+        path.addCurve(to: CGPoint(x: rect.width, y: mid),
+                      control1: CGPoint(x: rect.width * 0.67, y: mid - rise),
+                      control2: CGPoint(x: rect.width * 0.83, y: mid + rise))
+        path.addLine(to: CGPoint(x: rect.width, y: rect.height))
+        path.addLine(to: CGPoint(x: 0, y: rect.height))
+        path.closeSubpath()
+        return path
     }
 }
