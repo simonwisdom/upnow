@@ -7,6 +7,7 @@ struct MenuContentView: View {
     @StateObject private var login = LaunchAtLogin()
     @AppStorage(StatusPalette.colorblindDefaultsKey) private var colorblind = false
     @State private var showDrops = false
+    @State private var hoverTask: Task<Void, Never>?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -79,42 +80,61 @@ struct MenuContentView: View {
     }
 
     // Most of the time the header says all that matters, so drops get one
-    // summary line for today; the times are behind Details for digging in.
-    @ViewBuilder private var drops: some View {
+    // summary line for today; resting the pointer on it reveals the times.
+    private var drops: some View {
         let drops = stretches().filter { $0.state == .offline || $0.state == .captive }
         let today = drops.filter { Calendar.current.isDateInToday($0.start) }
-        HStack(spacing: 8) {
-            if today.isEmpty {
-                Image(nsImage: PeriscopeGlyph.make(size: 16, colorblind: colorblind))
-                Text("All clear today")
-            } else {
-                Circle().fill(color(for: .offline)).frame(width: 9, height: 9)
-                Text(todaySummary(today))
-            }
-            Spacer(minLength: 8)
-            if !drops.isEmpty {
-                Button(showDrops ? "Hide" : "Details") {
-                    withAnimation(.easeInOut(duration: 0.15)) { showDrops.toggle() }
+        return VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 8) {
+                if today.isEmpty {
+                    Image(nsImage: PeriscopeGlyph.make(size: 16, colorblind: colorblind))
+                    Text("All clear today")
+                } else {
+                    Circle().fill(color(for: .offline)).frame(width: 9, height: 9)
+                    Text(todaySummary(today))
                 }
-                .buttonStyle(.link)
+                Spacer(minLength: 8)
+                if !drops.isEmpty {
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(.secondary)
+                        .rotationEffect(.degrees(showDrops ? 180 : 0))
+                }
+            }
+            .font(.system(size: 13))
+            .padding(.horizontal, 16).padding(.vertical, 5)
+            if showDrops {
+                ForEach(drops.prefix(6)) { drop in
+                    HStack(spacing: 8) {
+                        Circle().fill(color(for: drop.state)).frame(width: 7, height: 7)
+                        Text(label(for: drop.state))
+                        Spacer(minLength: 8)
+                        Text("\(timeRange(drop.start, drop.end)) · \(formatDuration((drop.end ?? Date()).timeIntervalSince(drop.start)))")
+                            .monospacedDigit()
+                    }
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                    .padding(.horizontal, 16).padding(.vertical, 2)
+                }
             }
         }
-        .font(.system(size: 13))
-        .padding(.horizontal, 16).padding(.vertical, 5)
-        if showDrops {
-            ForEach(drops.prefix(6)) { drop in
-                HStack(spacing: 8) {
-                    Circle().fill(color(for: drop.state)).frame(width: 7, height: 7)
-                    Text(label(for: drop.state))
-                    Spacer(minLength: 8)
-                    Text("\(timeRange(drop.start, drop.end)) · \(formatDuration((drop.end ?? Date()).timeIntervalSince(drop.start)))")
-                        .monospacedDigit()
-                }
-                .font(.system(size: 12))
-                .foregroundColor(.secondary)
-                .lineLimit(1)
-                .padding(.horizontal, 16).padding(.vertical, 2)
+        // The whole section is the hover area, so moving down into the times
+        // keeps them open. A short delay stops the panel jumping when the
+        // pointer only passes over on its way to the buttons.
+        .contentShape(Rectangle())
+        .onHover { hovering in
+            guard !drops.isEmpty else { return }
+            hoverTask?.cancel()
+            hoverTask = Task { @MainActor in
+                try? await Task.sleep(nanoseconds: hovering ? 300_000_000 : 200_000_000)
+                guard !Task.isCancelled else { return }
+                withAnimation(.easeInOut(duration: 0.15)) { showDrops = hovering }
             }
+        }
+        .onTapGesture {
+            guard !drops.isEmpty else { return }
+            withAnimation(.easeInOut(duration: 0.15)) { showDrops.toggle() }
         }
     }
 
