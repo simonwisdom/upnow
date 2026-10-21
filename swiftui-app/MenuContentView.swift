@@ -154,6 +154,8 @@ struct MenuContentView: View {
                 if !monitor.history.isEmpty {
                     Button("Clear History") { monitor.clearHistory() }
                 }
+                Divider()
+                Button("Quit UpNow") { NSApp.terminate(nil) }
             } label: {
                 Image(systemName: "gearshape")
             }
@@ -162,15 +164,6 @@ struct MenuContentView: View {
             .fixedSize()
             .help("Settings")
             .padding(.horizontal, 6)
-
-            Button {
-                NSApp.terminate(nil)
-            } label: {
-                Image(systemName: "power")
-            }
-            .buttonStyle(.borderless)
-            .help("Quit UpNow")
-            .padding(.horizontal, 4)
         }
         .padding(12)
     }
