@@ -16,7 +16,7 @@ struct LoginItemApp: App {
     }
 
     private func launchMainIfNeeded() {
-        let mainBundleID = "com.example.UpNow"
+        let mainBundleID = "com.simonwisdom.upnow"
         if NSRunningApplication.runningApplications(withBundleIdentifier: mainBundleID).isEmpty {
             if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: mainBundleID) {
                 let config = NSWorkspace.OpenConfiguration()

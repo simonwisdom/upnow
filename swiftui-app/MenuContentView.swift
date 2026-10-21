@@ -17,17 +17,11 @@ struct MenuContentView: View {
                     .accessibilityHidden(true)
                 Text(monitor.statusText)
                     .font(.headline)
-                if let latency = monitor.latencyText {
-                    Text("· \(latency)")
+                if let detail = statusDetail() {
+                    Text("· \(detail)")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
-            }
-
-            if let ts = monitor.lastUpdated {
-                Text("Last checked: \(formatted(ts))")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
             }
 
             // Travel signals: only shown when something is off-nominal, so the
@@ -41,20 +35,6 @@ struct MenuContentView: View {
                 Text("📶 Hotspot / metered connection")
                     .font(.caption)
                     .foregroundColor(.secondary)
-            }
-
-            // Condensed history preview: colored dots + relative times
-            VStack(alignment: .leading, spacing: 2) {
-                // Single-line emoji row with inline chevron (oldest → now)
-                (
-                    Text(condensedEmojiLine() + " ") +
-                    Text(Image(systemName: "chevron.right")).font(.caption2).foregroundColor(.secondary)
-                )
-                .font(.caption)
-                .lineLimit(1)
-                .truncationMode(.tail)
-                .fixedSize(horizontal: true, vertical: false)
-                .accessibilityLabel("History, most recent at right")
             }
 
             Divider()
@@ -80,29 +60,23 @@ struct MenuContentView: View {
                 }
             }
 
-            // Asks for an admin password (pmset needs root); state updates via
-            // the system power-state notification once the change lands.
-            Toggle(isOn: Binding(
-                get: { power.lowPowerModeEnabled },
-                set: { power.setLowPowerMode($0) }
-            )) {
-                Text("Low Power Mode")
-            }
-            .disabled(power.isTogglingLowPowerMode)
+            Menu("Settings") {
+                Toggle(isOn: Binding(
+                    get: { login.enabled },
+                    set: { login.setEnabled($0) }
+                )) {
+                    Text("Launch at Login")
+                }
 
-            Toggle(isOn: Binding(
-                get: { login.enabled },
-                set: { login.setEnabled($0) }
-            )) {
-                Text("Launch at Login")
-            }
+                Toggle(isOn: $colorblind) {
+                    Text("Colorblind-Friendly Colors")
+                }
 
-            Toggle(isOn: $colorblind) {
-                Text("Colorblind-Friendly Colors")
-            }
+                Divider()
 
-            Button("Open Network Settings") {
-                openNetworkSettings()
+                Button("Open Network Settings") {
+                    openNetworkSettings()
+                }
             }
 
             Divider()
@@ -116,21 +90,18 @@ struct MenuContentView: View {
         .frame(minWidth: 220)
     }
 
+    // "24 ms · checked 1 min. ago", or whichever half is known.
+    private func statusDetail() -> String? {
+        var parts: [String] = []
+        if let latency = monitor.latencyText { parts.append(latency) }
+        if let ts = monitor.lastUpdated { parts.append("checked \(formatted(ts))") }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+
     private func formatted(_ date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .short
         return formatter.localizedString(for: date, relativeTo: Date())
-    }
-
-    // Build up to 5 states: up to 4 from history (oldest-first among most-recent subset) + current state as last ("now")
-    private func recentStates() -> [OnlineState] {
-        let recent = Array(monitor.history.prefix(4)) // newest-first subset
-        let oldestFirst = recent.reversed().map { $0.state }
-        return oldestFirst + [monitor.state]
-    }
-
-    private func condensedEmojiLine() -> String {
-        recentStates().map { StatusPalette.emoji(for: $0, colorblind: colorblind) }.joined(separator: " ")
     }
 
     private func historyLine(_ entry: ConnectivityMonitor.HistoryEntry, endDate: Date) -> String {

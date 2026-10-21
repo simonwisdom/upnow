@@ -4,7 +4,7 @@ import ServiceManagement
 @MainActor
 final class LaunchAtLogin: ObservableObject {
     @Published private(set) var enabled: Bool = false
-    private let helperIdentifier = "com.example.UpNow.LoginItem"
+    private let helperIdentifier = "com.simonwisdom.upnow.LoginItem"
 
     init() {
         refresh()
