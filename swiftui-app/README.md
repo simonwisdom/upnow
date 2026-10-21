@@ -16,7 +16,7 @@ How it works
 - Updates: Publishes changes on the main thread; the menu and icon update immediately.
 
 Screenshots
-![UpNow menu](../docs/screenshot.svg)
+![UpNow menu](../docs/menu.png)
 
 Get started
 1) Open `UpNow.xcodeproj` in Xcode.

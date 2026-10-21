@@ -1,15 +1,26 @@
-## UpNow
+<p align="center">
+  <img src="docs/icon.png" width="96" alt="UpNow icon">
+</p>
 
-UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’re online, offline, or need to sign in to a Wi-Fi login page — at a glance.
+<h1 align="center">UpNow</h1>
+
+<p align="center">Know at a glance whether you're online, offline, or stuck behind a Wi-Fi login page.</p>
+
+<p align="center"><a href="https://github.com/simonwisdom/upnow/releases/latest/download/UpNow.zip"><b>Download for macOS</b></a> · macOS 13 or later</p>
+
+<p align="center">
+  <img src="docs/menubar.gif" width="160" alt="The menu bar icon turns red with an Offline label, then green with Back online">
+</p>
+
+<p align="center">
+  <img src="docs/menu.png" width="530" alt="The UpNow menu with History open, listing recent drops">
+</p>
 
 - Clear icon in the menu bar (color + shape)
 - Status, latency and when it last checked, in one line
 - History: how long you have been online, then each drop and how long it lasted
 - A heads-up when you're on a hotspot or a weak power source
 - Colorblind-friendly colors and Launch at Login, under Settings
-
-## Screenshot
-![UpNow menu](docs/screenshot.svg)
 
 ## Install
 1. Download `UpNow.zip` from the [latest release](https://github.com/simonwisdom/upnow/releases/latest).
