@@ -3,35 +3,27 @@
 UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’re online, offline, or need to sign in to a captive portal — at a glance.
 
 - Clear icon in the menu bar (color + shape)
-- Compact history row of recent checks (oldest → now)
-- Manual refresh, quick access to Network settings
-- Optional Launch at Login helper
+- Status, latency and when it last checked, in one line
+- History of recent outages and how long they lasted
+- A heads-up when you're on a hotspot or a weak power source
+- Colorblind-friendly colors and Launch at Login, under Settings
 
 ## Screenshot
 ![UpNow menu](docs/screenshot.svg)
 
-## Requirements
-- macOS 13+ (Ventura or later)
-- Xcode 15+
-- Swift 5.9+
-
 ## Install
-- Build from source: Open `UpNow.xcodeproj` in Xcode, select the `UpNow` scheme, Run.
-- Run outside Xcode: Product → Show Build Folder in Finder → move `UpNow.app` from Build/Products/(Debug|Release) to `/Applications` and launch.
+1. Download `UpNow.zip` from the [latest release](https://github.com/simonwisdom/upnow/releases/latest).
+2. Unzip it and drag `UpNow.app` into Applications.
+3. Open it. The first time, macOS says it can't verify the app: open System Settings → Privacy & Security, scroll down and click **Open Anyway**.
 
-## Launch at Login
-- Enable the “Launch at Login” toggle in the app menu. Approve in System Settings if prompted.
-
-## Signing & IDs
-- Default bundle IDs: `com.example.UpNow` and `com.example.UpNow.LoginItem`.
-- Change both to your domain and set a Signing Team before distributing.
+Requires macOS 13 (Ventura) or later.
 
 ## Privacy
 - No analytics or telemetry.
 - Connectivity checks fetch the standard captive-portal endpoints `captive.apple.com/hotspot-detect.html` and `www.gstatic.com/generate_204`.
 
-## Details
-- App source lives in `swiftui-app/`. See `swiftui-app/README.md` for implementation notes.
+## Build from source
+Open `UpNow.xcodeproj` in Xcode 15+, select the `UpNow` scheme and Run. App source lives in `swiftui-app/`; see `swiftui-app/README.md` for implementation notes.
 
 ## License
 MIT — see `LICENSE`.

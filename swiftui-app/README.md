@@ -5,14 +5,14 @@ UpNow is a tiny, privacy‑friendly macOS menu bar app that shows whether you’
 Features
 - Fast status: Online, Offline, Checking, or Login Required.
 - Clear icon: Always‑visible color icon in the menu bar.
-- Compact history: Emoji dots (oldest → now) with a marker at the end.
+- History: Recent outages and how long they lasted.
 - Manual refresh: “Check Now” from the menu.
 - Launch at Login: Optional background helper.
-- Privacy‑friendly: No analytics. Checks use short HEAD requests to well‑known sites.
+- Privacy‑friendly: No analytics. Checks fetch Apple's and Google's standard captive-portal pages.
 
 How it works
 - Network.framework: Listens for reachability changes with `NWPathMonitor`.
-- Probe: Verifies internet access with quick HEAD requests to `apple.com`, then `cloudflare.com` if needed.
+- Probe: Verifies internet access by fetching the captive-portal endpoints `captive.apple.com/hotspot-detect.html` and `www.gstatic.com/generate_204`.
 - Updates: Publishes changes on the main thread; the menu and icon update immediately.
 
 Screenshots
@@ -20,7 +20,7 @@ Screenshots
 
 Get started
 1) Open `UpNow.xcodeproj` in Xcode.
-2) Select the main target, set a signing team if prompted.
+2) Select the `UpNow` scheme.
 3) Run. The UpNow icon appears in the menu bar; click it to open the menu.
 
 Accessibility
@@ -30,8 +30,8 @@ Accessibility
 
 Notes
 - App name: User‑visible name is “UpNow”.
-- Bundle IDs: Default identifiers are `com.example.UpNow` and `com.example.UpNow.LoginItem`. Change them before distributing.
+- Bundle IDs: `com.simonwisdom.upnow` and `com.simonwisdom.upnow.LoginItem`.
 - macOS: Targets macOS 13+ (Ventura or later).
 
 License
-MIT or your preferred license — add one before sharing publicly.
+MIT — see `../LICENSE`.
