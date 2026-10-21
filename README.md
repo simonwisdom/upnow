@@ -1,20 +1,15 @@
 <p align="center">
-  <img src="docs/icon.png" width="96" alt="UpNow icon">
+  <img src="docs/banner.png" alt="UpNow: online, offline, or stuck behind a Wi-Fi login? Know at a glance.">
 </p>
 
-<h1 align="center">UpNow</h1>
+<p align="center"><a href="https://github.com/simonwisdom/upnow/releases/latest/download/UpNow.zip"><b>Download for macOS</b></a> · Free · macOS 13 or later</p>
 
-<p align="center">Know at a glance whether you're online, offline, or stuck behind a Wi-Fi login page.</p>
-
-<p align="center"><a href="https://github.com/simonwisdom/upnow/releases/latest/download/UpNow.zip"><b>Download for macOS</b></a> · macOS 13 or later</p>
-
-<p align="center">
-  <img src="docs/menubar.gif" width="160" alt="The menu bar icon turns red with an Offline label, then a periscope pops up with Back online">
-</p>
-
-<p align="center">
-  <img src="docs/menu.png" width="530" alt="The UpNow menu with History open, listing recent drops">
-</p>
+<table>
+  <tr>
+    <td align="center" valign="top" width="50%"><img src="docs/menubar-card.gif" width="300" alt="The menu bar turns red with Offline, then a periscope pops up with Back online"><br><sub><b>Drops, at a glance.</b> The dot turns red, and a periscope pops up when you're back.</sub></td>
+    <td align="center" valign="top" width="50%"><img src="docs/welcome.gif" width="300" alt="The welcome window, with the periscope rising out of the water"><br><sub><b>A warm welcome.</b> Shown once, so you know where to look.</sub></td>
+  </tr>
+</table>
 
 - Clear icon in the menu bar (color + shape)
 - Status, latency and when it last checked, in one line
