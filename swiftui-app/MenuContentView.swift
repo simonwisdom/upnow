@@ -6,6 +6,7 @@ struct MenuContentView: View {
     @ObservedObject var power: PowerMonitor
     @StateObject private var login = LaunchAtLogin()
     @AppStorage(StatusPalette.colorblindDefaultsKey) private var colorblind = false
+    @State private var showDrops = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -77,35 +78,51 @@ struct MenuContentView: View {
             .padding(.horizontal, 16).padding(.vertical, 4)
     }
 
-    // Being online is the normal state, so the list shows only the drops.
+    // Most of the time the header says all that matters, so drops get one
+    // summary line for today; the times are behind Details for digging in.
     @ViewBuilder private var drops: some View {
-        Text("RECENT DROPS")
-            .font(.system(size: 11, weight: .semibold))
-            .foregroundColor(.secondary)
-            .padding(.horizontal, 16).padding(.top, 2).padding(.bottom, 4)
         let drops = stretches().filter { $0.state == .offline || $0.state == .captive }
-        if drops.isEmpty {
-            HStack(spacing: 8) {
+        let today = drops.filter { Calendar.current.isDateInToday($0.start) }
+        HStack(spacing: 8) {
+            if today.isEmpty {
                 Image(nsImage: PeriscopeGlyph.make(size: 16, colorblind: colorblind))
-                Text("All clear, nothing spotted")
+                Text("All clear today")
+            } else {
+                Circle().fill(color(for: .offline)).frame(width: 9, height: 9)
+                Text(todaySummary(today))
             }
-            .font(.system(size: 13))
-            .padding(.horizontal, 16).padding(.vertical, 5)
-        } else {
+            Spacer(minLength: 8)
+            if !drops.isEmpty {
+                Button(showDrops ? "Hide" : "Details") {
+                    withAnimation(.easeInOut(duration: 0.15)) { showDrops.toggle() }
+                }
+                .buttonStyle(.link)
+            }
+        }
+        .font(.system(size: 13))
+        .padding(.horizontal, 16).padding(.vertical, 5)
+        if showDrops {
             ForEach(drops.prefix(6)) { drop in
                 HStack(spacing: 8) {
-                    Circle().fill(color(for: drop.state)).frame(width: 9, height: 9)
+                    Circle().fill(color(for: drop.state)).frame(width: 7, height: 7)
                     Text(label(for: drop.state))
                     Spacer(minLength: 8)
                     Text("\(timeRange(drop.start, drop.end)) · \(formatDuration((drop.end ?? Date()).timeIntervalSince(drop.start)))")
-                        .foregroundColor(.secondary)
                         .monospacedDigit()
                 }
-                .font(.system(size: 13))
+                .font(.system(size: 12))
+                .foregroundColor(.secondary)
                 .lineLimit(1)
-                .padding(.horizontal, 16).padding(.vertical, 4)
+                .padding(.horizontal, 16).padding(.vertical, 2)
             }
         }
+    }
+
+    // "2 drops today · 5m offline"
+    private func todaySummary(_ today: [Stretch]) -> String {
+        let total = today.reduce(0) { $0 + (($1.end ?? Date()).timeIntervalSince($1.start)) }
+        let count = today.count == 1 ? "1 drop today" : "\(today.count) drops today"
+        return "\(count) · \(formatDuration(total)) offline"
     }
 
     private var footer: some View {
