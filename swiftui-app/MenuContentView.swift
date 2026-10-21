@@ -51,8 +51,9 @@ struct MenuContentView: View {
                 Divider()
                 let drops = stretches().filter { $0.state == .offline || $0.state == .captive }
                 if drops.isEmpty {
-                    Text("No drops yet")
-                        .foregroundColor(.secondary)
+                    // Inline in the text: the native menu drops a Label's icon.
+                    Text(Image(nsImage: PeriscopeGlyph.make(size: 16, colorblind: colorblind)))
+                        + Text("  All clear, nothing spotted")
                 } else {
                     ForEach(drops) { drop in
                         Text(dropLine(drop))
